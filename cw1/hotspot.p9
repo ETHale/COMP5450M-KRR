@@ -75,11 +75,11 @@ formulas(assumptions).
 %% A4: "The ThinkPad is always in hotspot range of my mobile except when one is in the
 %%      kitchen and the other in the wash room."
 
-        -ThinkPadInHotSpotRangeMobile -> (ThinkPadInKitchen & MobileInWashRoom) | (ThinkPadInWashRoom & MobileInKitchen).
+        ThinkPadInHotSpotRangeMobile <-> -((ThinkPadInKitchen & MobileInWashRoom) | (ThinkPadInWashRoom & MobileInKitchen)).
 
 %% A5: "The mobile is in one of three rooms: kitchen or lounge, or wash room."
 
-        (MobileInKitchen | MobileInLounge | MobileInWashRoom) & -(MobileInKitchen & MobileInLounge) & -(MobileInKitchen & MobileInWashRoom) & -(MobileInLounge & MobileInWashRoom).
+        (MobileInKitchen | MobileInLounge | MobileInWashRoom) & (-(MobileInKitchen & MobileInLounge) & -(MobileInKitchen & MobileInWashRoom) & -(MobileInLounge & MobileInWashRoom)).
 
 %% A6: "If the smart speaker light is red, the WiFi is down."
 
@@ -92,7 +92,7 @@ formulas(assumptions).
 
 %% A8: "The mobile is neither on the window sill nor on the comfy chair."
 
-        -MobileOnWindowSill & -MobileOnComfyChair.
+        -(MobileOnWindowSill | MobileOnComfyChair).
 
 end_of_list.
 
