@@ -1,0 +1,111 @@
+% Saved by Prover9-Mace4 Version 0.5, December 2007.
+
+set(ignore_option_dependencies). % GUI handles dependencies
+
+if(Prover9). % Options for Prover9
+  clear(auto).
+  clear(auto_setup).
+  clear(auto_limits).
+  clear(auto_denials).
+  clear(auto_inference).
+  clear(auto_process).
+  assign(eq_defs, pass).
+  assign(max_seconds, 10).
+  assign(max_weight, 2147483647).
+  clear(predicate_elim).
+  set(binary_resolution).
+  set(paramodulation).
+  set(factor).
+end_if.
+
+if(Mace4).   % Options for Mace4
+  assign(max_seconds, 60).
+end_if.
+
+if(Prover9). % Additional input for Prover9
+assign(sos_limit, -1).
+% Last line is a lie. It is there to stop the Prover9-Mace4
+% GUI giving a warning when the file is loaded.
+% This file was actually created by BB Prover9 Autograder
+end_if.
+
+formulas(assumptions).
+
+%% The Academy
+%% A logic puzzle by Brandon Bennett
+
+%% Prover9 file: academy.p9
+
+%% To solve this first-order logic proof problem, you must replace
+%% each of the assumption place-holders __An__ and the goal place-holder
+%% __G__, with an approapriate first-order formula that captures the
+%% meaning of the given English sentence.
+
+%% Then run Prover9.
+%% If your representations are correct, it should find a Proof.
+%% You can also check your representations using the Gradescope Autograder.
+
+%% In writing the formulae, you should only use the following vocabulary:
+
+%% Logical symbols:           &  |  -  ->   <->  =  all  exists
+%% Brackets and separators:   ( )  [  ]  ,  .
+%% Variables:                 Whatever you like, but must be quantified.
+
+%% Names: aspasia, hypatia
+%% Properties: Satisfied, KRR_Expert, Geometer, Poet, Sculptor
+%% Relations: Older, Younger, Idolises, Respects, DreamsOfSuccess
+
+%% Use only the specified vocabulary, otherwise the autograder will not work.
+
+%% A1: "Every sculptor idolises exactly one KRR expert (they do not necessarily idolise
+%%      the same one)."
+
+        all x (Sculptor(x) -> exists y (KRR_Expert(y) & Idolises(x, y) & all z((KRR_Expert(z) & Idolises(x, z)) -> z = y))).
+
+%% A2: "If someone is older than another person, then they are older than everyone who is
+%%      younger than the other."
+
+        all x all y all z(Older(x, y) & Younger(z, y) -> Older(x, z)).
+
+%% A3: "Aspasia is the only KRR expert who is older than Hypatia."
+
+        all x((Older(x, hypatia) & KRR_Expert(x)) -> x = aspasia) & Older(aspasia, hypatia).
+
+%% A4: "Among KRR experts, only Aspasia is idolised by someone younger than Hypatia."
+
+        all x all y((KRR_Expert(y) & Idolises(x, y) & Younger(x, hypatia)) -> y = aspasia).
+
+%% A5: "No geometer is a sculptor."
+
+        all x(Geometer(x) -> -Sculptor(x)).
+
+%% A6: "At least two sculptors are younger than Hypatia."
+
+        exists x exists y((-(x = y) & Sculptor(x) & Sculptor(y)) & (Younger(x, hypatia) & Younger(y, hypatia))).
+
+%% A7: "Everyone who respects a KRR expert is either a poet or a geometer."
+
+        all x all y((KRR_Expert(y) & Respects(x, y)) -> (Poet(x) | Geometer(x))).
+
+%% A8: "No poet who dreams of success is satisfied."
+
+        all x((Poet(x) & DreamsOfSuccess(x)) -> -Satisfied(x)).
+
+%% A9: "Idolisation implies respect."
+
+        all x all y(Idolises(x, y) -> Respects(x, y)).
+
+%% A10: "Anyone who idolises someone older than themself dreams of success."
+
+        all x all y(Idolises(x, y) & Older(y, x) -> DreamsOfSuccess(x)).
+
+end_of_list.
+
+formulas(goals).
+
+%% GOAL: "Not all poets are satisfied"
+
+          exists x(Poet(x) & -Satisfied(x)).
+
+end_of_list.
+
